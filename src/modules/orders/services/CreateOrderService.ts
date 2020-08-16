@@ -59,7 +59,7 @@ class CreateOrderService {
 
     if (findProductsWithoutStock.length > 0) {
       throw new AppError(
-        `${findProductsWithoutStock.length} don't have enough stock`,
+        `${findProductsWithoutStock.length} product doesn't have enough stock`,
       );
     }
 
@@ -68,14 +68,14 @@ class CreateOrderService {
       products: products.map((product, index) => ({
         product_id: product.id,
         quantity: product.quantity,
-        price: storedProducts[index].price * product.quantity,
+        price: storedProducts[index].price,
       })),
     });
 
     const { order_products } = order;
 
     const productsToUpdate = storedProducts.map((product, index) => ({
-      ...product,
+      id: product.id,
       quantity: product.quantity - order_products[index].quantity,
     }));
 
